@@ -31,12 +31,13 @@
 </div>
 
 <script>
-    // بيانات Supabase الخاصة بك
+    // بيانات الاتصال بقاعدة البيانات
     const SUPABASE_URL = 'https://dsmflhnjmnllvhqkuepit.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzbWZsaG5qbW5sbHZoa3VlcGl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMwMDkzNDksImV4cCI6MjEwODU4NTM0OX0.lZTNCcKa_GW22fIPNGvDyH-sJ-zIyUUySiBtLS7tDmM';
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    
+    // تم إصلاح الخطأ هنا (تغيير اسم المتغير إلى supabaseClient)
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // استخراج الاختيار والإيميل من الرابط المخفي
     const urlParams = new URLSearchParams(window.location.search);
     const choixNavette = urlParams.get('choix');
     const emailEmploye = urlParams.get('email');
@@ -48,12 +49,11 @@
             return;
         }
 
-        // عرض الاختيار للعامل
         document.getElementById('display-choix').innerText = choixNavette.replace(/_/g, ' ');
         document.getElementById('display-choix').style.display = 'inline-block';
 
         // الإرسال الفوري لـ Supabase
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('navette_reponses')
             .insert([{ email_employe: emailEmploye, choix: choixNavette }]);
 
@@ -67,7 +67,6 @@
         }
     }
 
-    // تشغيل الإرسال بمجرد فتح الصفحة
     window.onload = enregistrer;
 </script>
 
